@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Terraform backend creation for Terraform state.
+
+Resources:
+  statebucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: "owner"
+          Value: "pieter.vincken@ordina.be"
+        - Key: "project"
+          Value: "basicawsdemo"
+  lock:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "LockID"
+          AttributeType: "S"
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: "LockID"
+          KeyType: "HASH"
+      Tags:
+        - Key: "owner"
+          Value: "pieter.vincken@ordina.be"
+        - Key: "project"
+          Value: "basicawsdemo"
+Outputs:
+  bucketname:
+    Description: Name of the state bucket
+    Value: !Ref statebucket
+
+  locktable:
+    Description: Dynamo tablename for the lock
+    Value: !Ref lock
