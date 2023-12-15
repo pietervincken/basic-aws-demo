@@ -52,7 +52,7 @@ module "alb" {
         enabled             = true
         healthy_threshold   = 5
         interval            = 30
-        matcher             = "302"
+        matcher             = "200,302"
         path                = "/"
         port                = "traffic-port"
         protocol            = "HTTP"
