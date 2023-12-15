@@ -10,15 +10,15 @@ module "ecs" {
   services = {
     phppgadmin = {
 
-      cpu    = 1024
-      memory = 2048
+      cpu    = 512
+      memory = 1024
 
       # Container definition(s)
       container_definitions = {
         phppgadmin = {
           name   = "phppgadmin"
-          cpu    = 1024
-          memory = 2048
+          cpu    = 512
+          memory = 1024
           #https://github.com/dockersamples/spring-petclinic-docker
           image = "bitnami/phppgadmin-archived"
           port_mappings = [
@@ -30,14 +30,11 @@ module "ecs" {
           ]
 
           environment = [
-
-
             { "name" : "DATABASE_ENABLE_EXTRA_LOGIN_SECURITY", value : "yes" },
             { "name" : "DATABASE_HOST", value : module.db.db_instance_address },
             { "name" : "DATABASE_SSL_MODE", value : "require" },
             { "name" : "PHPPGADMIN_URL_PREFIX", value : "demo" }
           ]
-
 
           # Example image used requires access to write to root filesystem
           readonly_root_filesystem  = false
