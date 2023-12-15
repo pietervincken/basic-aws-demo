@@ -20,6 +20,8 @@ bucketname=$(echo $output | jq --raw-output '.Stacks[0].Outputs[] | select(.Outp
 lockname=$(echo $output | jq --raw-output '.Stacks[0].Outputs[] | select(.OutputKey=="locktable") | .OutputValue')
 
 rm ecs/config.s3.tfbackend || true
+rm ecs-rds/config.s3.tfbackend || true
+rm eks/config.s3.tfbackend || true
 
 echo "bucket                = \"$bucketname\""         >> ecs/config.s3.tfbackend
 echo "dynamodb_table        = \"$lockname\""           >> ecs/config.s3.tfbackend
