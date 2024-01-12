@@ -8,14 +8,14 @@ module "ecs" {
   cluster_settings = { "name" : "containerInsights", "value" : "disabled" }
 
   services = {
-    container = {
+    snake = {
       cpu    = 512
       memory = 1024
 
       # Container definition(s)
       container_definitions = {
 
-        container = {
+        application = {
           cpu    = 512
           memory = 1024
           image  = "pietervincken/snake-server:0.0.2"
@@ -38,7 +38,7 @@ module "ecs" {
       load_balancer = {
         service = {
           target_group_arn = module.alb.target_groups.ecs.arn
-          container_name   = "container"
+          container_name   = "application"
           container_port   = local.container_port
         }
       }

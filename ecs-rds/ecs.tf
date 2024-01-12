@@ -3,24 +3,23 @@ module "ecs" {
   version = "5.7.3"
 
   cluster_name                = "ecs-cluster-${local.name}"
-  create_cloudwatch_log_group = true
+  create_cloudwatch_log_group = false
 
   cluster_settings = { "name" : "containerInsights", "value" : "disabled" }
 
   services = {
     phppgadmin = {
-
       cpu    = 512
       memory = 1024
 
       # Container definition(s)
       container_definitions = {
-        phppgadmin = {
-          name   = "phppgadmin"
+
+        application = {
           cpu    = 512
           memory = 1024
           #https://github.com/dockersamples/spring-petclinic-docker
-          image = "bitnami/phppgadmin-archived"
+          image = "bitnami/phppgadmin-archived"          
           port_mappings = [
             {
               name          = "container"
@@ -47,7 +46,7 @@ module "ecs" {
       load_balancer = {
         service = {
           target_group_arn = module.alb.target_groups.ecs.arn
-          container_name   = "phppgadmin"
+          container_name   = "application"
           container_port   = local.container_port
         }
       }
