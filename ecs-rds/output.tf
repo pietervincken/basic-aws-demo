@@ -10,3 +10,11 @@ output "username" {
   sensitive = true
   value     = module.db.db_instance_username
 }
+
+output "db_public_fqdn" {
+  value = module.db.db_instance_address
+}
+
+output "db_name" {
+  value = local.db_name
+}

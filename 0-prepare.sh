@@ -10,10 +10,15 @@ if [ -z $PROJECT_NAME ]; then
     exit 1
 fi
 
+if [ -z $USER_EMAIL ]; then
+    echo "Could not find USER_EMAIL. Stopping!"
+    exit 1
+fi
+
 aws cloudformation deploy \
     --template-file cloudformation/prepare-tf.yaml \
     --stack-name $PROJECT_NAME \
-    --tags owner=pieter.vincken@ordina.be project=$PROJECT_NAME
+    --tags owner=$USER_EMAIL project=$PROJECT_NAME
 
 output=$(aws cloudformation describe-stacks --stack-name $PROJECT_NAME)
 bucketname=$(echo $output | jq --raw-output '.Stacks[0].Outputs[] | select(.OutputKey=="bucketname") | .OutputValue')

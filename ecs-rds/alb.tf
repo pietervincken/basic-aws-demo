@@ -1,7 +1,7 @@
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "=9.1.0"
+  version = "=9.13.0"
 
   name = "alb-${local.name}"
 

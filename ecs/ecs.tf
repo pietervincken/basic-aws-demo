@@ -1,6 +1,6 @@
 module "ecs" {
   source  = "terraform-aws-modules/ecs/aws"
-  version = "5.7.3"
+  version = "5.12.0"
 
   cluster_name                = "ecs-cluster-${local.name}"
   create_cloudwatch_log_group = false

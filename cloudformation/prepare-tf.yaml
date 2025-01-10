@@ -1,6 +1,20 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Terraform backend creation for Terraform state.
 
+Parameters:
+  Email:
+    Type: String
+    Description: Email address of the owner of the resources
+    MinLength: 5
+    MaxLength: 255
+    ConstraintDescription: Must be a valid email address
+  ProjectName:
+    Type: String
+    Description: Name of the project
+    MinLength: 1
+    MaxLength: 255
+    ConstraintDescription: Must be a valid project name
+
 Resources:
   statebucket:
     Type: "AWS::S3::Bucket"
@@ -12,9 +26,11 @@ Resources:
         RestrictPublicBuckets: true
       Tags:
         - Key: "owner"
-          Value: "pieter.vincken@ordina.be"
+          Value: 
+            Ref: Email
         - Key: "project"
-          Value: "basicawsdemo"
+          Value: 
+            Ref: ProjectName
   lock:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -27,9 +43,10 @@ Resources:
           KeyType: "HASH"
       Tags:
         - Key: "owner"
-          Value: "pieter.vincken@ordina.be"
-        - Key: "project"
-          Value: "basicawsdemo"
+          Value: 
+            Ref: Email
+        - Key: 
+            Ref: ProjectName
 Outputs:
   bucketname:
     Description: Name of the state bucket

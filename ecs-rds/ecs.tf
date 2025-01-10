@@ -1,6 +1,6 @@
 module "ecs" {
   source  = "terraform-aws-modules/ecs/aws"
-  version = "5.7.3"
+  version = "5.12.0"
 
   cluster_name                = "ecs-cluster-${local.name}"
   create_cloudwatch_log_group = false
@@ -8,7 +8,7 @@ module "ecs" {
   cluster_settings = { "name" : "containerInsights", "value" : "disabled" }
 
   services = {
-    phppgadmin = {
+    snake = {
       cpu    = 512
       memory = 1024
 
@@ -18,8 +18,7 @@ module "ecs" {
         application = {
           cpu    = 512
           memory = 1024
-          #https://github.com/dockersamples/spring-petclinic-docker
-          image = "bitnami/phppgadmin-archived"          
+          image = "bitnami/phppgadmin-archived"
           port_mappings = [
             {
               name          = "container"
@@ -27,14 +26,12 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-
           environment = [
-            { "name" : "DATABASE_ENABLE_EXTRA_LOGIN_SECURITY", value : "yes" },
-            { "name" : "DATABASE_HOST", value : module.db.db_instance_address },
-            { "name" : "DATABASE_SSL_MODE", value : "require" },
-            { "name" : "PHPPGADMIN_URL_PREFIX", value : "demo" }
+            { name : "DATABASE_ENABLE_EXTRA_LOGIN_SECURITY", value : "yes" },
+            { name : "DATABASE_HOST", value : module.db.db_instance_address },
+            { name : "DATABASE_SSL_MODE", value : "require" },
+            { name : "PHPPGADMIN_URL_PREFIX", value : "demo" }
           ]
-
           # Example image used requires access to write to root filesystem
           readonly_root_filesystem  = false
           enable_cloudwatch_logging = true

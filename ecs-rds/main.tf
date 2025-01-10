@@ -5,20 +5,32 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "=5.31.0"
+      version = "=5.83.0"
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "=3.4.5"
     }
   }
 }
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-west-1"
+  region = "eu-central-1"
   default_tags {
     tags = {
-      owner      = "basic-aws-demo"
-      created-by = "pieter.vincken@ordina.be"
+      owner      = var.user_email
+      project    = var.project_name
     }
   }
+}
+
+provider "http" {
+
+}
+
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
 }
 
 # Declare the data source
@@ -28,11 +40,11 @@ data "aws_availability_zones" "available" {
 
 locals {
   tags = {
-    owner      = "basic-aws-demo"
-    created-by = "pieter.vincken@ordina.be"
+    owner      = var.user_email
+    project    = var.project_name
   }
 
-  name = "basicawsdemo"
+  name = var.project_name
 
   vpc_cidr = "10.0.0.0/16"
   azs = [
