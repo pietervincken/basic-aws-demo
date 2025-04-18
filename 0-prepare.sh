@@ -18,7 +18,8 @@ fi
 aws cloudformation deploy \
     --template-file cloudformation/prepare-tf.yaml \
     --stack-name $PROJECT_NAME \
-    --tags owner=$USER_EMAIL project=$PROJECT_NAME
+    --tags owner=$USER_EMAIL project=$PROJECT_NAME \
+    --parameter-overrides "ParameterKey=ProjectName,ParameterValue=$PROJECT_NAME ParameterKey=Email,ParameterValue=$USER_EMAIL"
 
 output=$(aws cloudformation describe-stacks --stack-name $PROJECT_NAME)
 bucketname=$(echo $output | jq --raw-output '.Stacks[0].Outputs[] | select(.OutputKey=="bucketname") | .OutputValue')
